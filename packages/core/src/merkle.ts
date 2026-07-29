@@ -19,14 +19,21 @@ export function buildBatchTree(
   return StandardMerkleTree.of(tuples, [...LEAF_ENCODING]);
 }
 
+/**
+ * Returns the double-hashed leaf value that StandardMerkleTree produces and
+ * that VeriDoc.sol recomputes via MerkleProof.verify. This must be the
+ * revocation key stored on-chain.
+ *
+ * We derive it from a single-leaf tree rather than reimplementing the
+ * double-hash ourselves, guaranteeing byte-for-byte agreement with OZ's
+ * implementation regardless of future encoding changes.
+ */
 export function leafHash(leaf: CertificateLeaf): Hex {
-  // Build a single-leaf tree to extract the double-hashed leaf value.
-  // This guarantees the hash matches exactly what StandardMerkleTree produces.
   const tree = StandardMerkleTree.of([toTuple(leaf)], [...LEAF_ENCODING]);
-  for (const [, value] of tree.entries()) {
-    return tree.leafHash(value) as Hex;
+  for (const [index] of tree.entries()) {
+    return tree.leafHash(toTuple(leaf)) as Hex;
   }
-  throw new Error('unreachable');
+  throw new Error('unreachable: tree must have at least one leaf');
 }
 
 export function getProof(
