@@ -85,6 +85,6 @@ _Populated after Phase 6._
 - [x] Phase 1 — Monorepo scaffold
 - [x] Phase 2 — `packages/core`
 - [x] Phase 3 — `packages/contracts`
-- [ ] Phase 4 — `packages/cli`
+- [x] Phase 4 — `packages/cli`
 - [ ] Phase 5 — `apps/web`
 - [ ] Phase 6 — Deploy and document
