@@ -37,9 +37,14 @@ in the credential bundle / QR code — never on-chain.
 | `Revoked` | Proof is valid but the leaf has been explicitly revoked |
 | `Unknown` | The batch ID was never anchored |
 
-## Gas numbers (Phase 3 — measured on Hardhat)
+## Gas numbers (Phase 3 — measured on Hardhat local node)
 
-_Populated after Phase 3._
+| Operation | Gas used | Notes |
+|-----------|----------|-------|
+| `anchorBatch` (1-leaf tree) | **96,178** | Stores root + issuer + timestamp |
+| `revokeMany` (50 leaves) | **2,462,647** | ~49,253 gas/leaf at scale |
+
+At 20 gwei on Ethereum mainnet these are roughly $0.50 and $25 respectively. On L2s (Arbitrum, Base) costs are ~10–100× lower. Sepolia testnet ETH is free.
 
 ## Local setup
 
@@ -78,8 +83,8 @@ _Populated after Phase 6._
 ## Phases
 
 - [x] Phase 1 — Monorepo scaffold
-- [ ] Phase 2 — `packages/core`
-- [ ] Phase 3 — `packages/contracts`
+- [x] Phase 2 — `packages/core`
+- [x] Phase 3 — `packages/contracts`
 - [ ] Phase 4 — `packages/cli`
 - [ ] Phase 5 — `apps/web`
 - [ ] Phase 6 — Deploy and document
