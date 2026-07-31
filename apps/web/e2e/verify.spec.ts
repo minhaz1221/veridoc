@@ -40,10 +40,7 @@ test.describe('VeriDoc verify flow', () => {
   let batchId: string;
 
   test.beforeAll(async () => {
-    if (!CONTRACT_ADDRESS) {
-      test.skip();
-      return;
-    }
+    expect(CONTRACT_ADDRESS, 'NEXT_PUBLIC_CONTRACT_ADDRESS must be set to run this test').toBeTruthy();
 
     const provider = new ethers.JsonRpcProvider(RPC_URL);
     const accounts = await provider.listAccounts();
@@ -113,10 +110,7 @@ test.describe('VeriDoc verify flow', () => {
       ? await page.locator('input[type="file"][accept=".pdf"]').all()
       : [];
 
-    if (!pdfInput) {
-      test.skip();
-      return;
-    }
+    expect(pdfInput, 'PDF file input not found on verify page').toBeTruthy();
 
     await pdfInput.setInputFiles({
       name: 'cert.pdf',
@@ -147,7 +141,7 @@ test.describe('VeriDoc verify flow', () => {
     await page.goto('/');
 
     const [pdfInput] = await page.locator('input[type="file"][accept=".pdf"]').all();
-    if (!pdfInput) { test.skip(); return; }
+    expect(pdfInput, 'PDF file input not found on verify page').toBeTruthy();
 
     await pdfInput.setInputFiles({
       name: 'tampered.pdf',
