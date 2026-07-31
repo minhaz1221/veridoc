@@ -3,7 +3,7 @@ import { join, resolve } from 'node:path';
 import { ethers } from 'ethers';
 import { getProvider, getContract, getSigner, getContractAddress } from '../lib/contract.js';
 import type { BatchJson } from './batch.js';
-import 'dotenv/config';
+import '../env.js';
 
 export type AnchorOptions = {
   batch: string;

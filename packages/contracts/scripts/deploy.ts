@@ -1,6 +1,20 @@
-import { ethers } from 'hardhat';
+import { ethers, network } from 'hardhat';
+
+function requireEnv(name: 'SEPOLIA_RPC_URL' | 'DEPLOYER_PRIVATE_KEY'): void {
+  if (!process.env[name]) {
+    throw new Error(
+      `Missing required environment variable ${name}. ` +
+        'Create a .env file at the repository root (see .env.example) and set it there.',
+    );
+  }
+}
 
 async function main() {
+  if (network.name === 'sepolia') {
+    requireEnv('SEPOLIA_RPC_URL');
+    requireEnv('DEPLOYER_PRIVATE_KEY');
+  }
+
   const [deployer] = await ethers.getSigners();
   console.log(`Deploying VeriDoc with account: ${deployer.address}`);
 

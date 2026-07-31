@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import 'dotenv/config';
+import './env.js';
 
 const program = new Command();
 

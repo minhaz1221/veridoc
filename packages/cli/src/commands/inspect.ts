@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { ethers } from 'ethers';
 import { decodeBundle, leafHash, hashFile } from '@veridoc/core';
 import { getProvider, getContract, getContractAddress } from '../lib/contract.js';
-import 'dotenv/config';
+import '../env.js';
 
 export type InspectOptions = {
   bundle: string;
