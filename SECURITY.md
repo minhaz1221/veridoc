@@ -62,6 +62,28 @@ The append-only revocation model means that once a credential is revoked,
 that fact is permanent and publicly auditable. Verifiers who cached an
 earlier "Valid" response can always re-query to discover the revocation.
 
+### Revocation authorization is batch-scoped by caller, not by leaf
+
+`revoke()` and `revokeMany()` check that `msg.sender` is the issuer of the
+`batchId` argument the caller supplies — but neither function verifies that
+the `leaf` argument actually belongs to that batch, and `_revocations` is
+keyed globally by leaf, not per-batch. An issuer holding `ISSUER_ROLE` could
+therefore revoke a credential anchored by a *different* issuer's batch by
+calling `revoke(theirOwnBatchId, someoneElsesLeaf, reason)` — the batch
+ownership check passes because it only checks their own batchId, and the
+global `_revocations` mapping is written regardless of which batch the leaf
+actually came from.
+
+Fixing this properly requires either passing a Merkle proof into `revoke()`
+so the contract can confirm the leaf is a member of the claimed batch, or
+keying `_revocations` by `keccak256(batchId, leaf)` so a revocation can only
+ever apply within its own batch.
+
+**Not exploitable in the current single-issuer deployment** — there is only
+one address holding `ISSUER_ROLE`, so there is no other issuer's batch to
+target. It becomes a real cross-issuer risk the moment a second issuer is
+registered.
+
 ### Why the salt is not on-chain
 
 Certificate content is predictable: name, program, CGPA, date. A leaf
