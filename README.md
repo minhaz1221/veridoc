@@ -149,6 +149,23 @@ _Sepolia deployment requires user-provided credentials (DEPLOYER_PRIVATE_KEY, SE
 |---------|-----------------|---------------|
 | Sepolia | — (deploy with `pnpm deploy:sepolia`) | — |
 
+## Vercel deployment
+
+`apps/web` deploys to Vercel as a standalone project:
+
+- **Root Directory**: `apps/web`
+- **Build command**: read from `apps/web/vercel.json` (`pnpm --filter @veridoc/core build && pnpm build`) — this builds `@veridoc/core`'s `dist/` output before `next build`, since Vercel only installs and builds within the Root Directory by default and `apps/web` depends on the compiled core package.
+
+Required environment variables (Project Settings → Environment Variables):
+
+| Variable | Value |
+|----------|-------|
+| `NEXT_PUBLIC_RPC_URL` | Sepolia RPC endpoint |
+| `NEXT_PUBLIC_CONTRACT_ADDRESS` | Deployed `VeriDoc.sol` address |
+| `NEXT_PUBLIC_CHAIN_ID` | `11155111` (Sepolia) |
+
+> **Warning**: `NEXT_PUBLIC_RPC_URL` is inlined into client-side JS and visible to anyone using the site — use an RPC provider key that is domain-restricted, not a general-purpose key.
+
 ## Known limitations
 
 1. **PDF byte-instability**: Re-saving, re-printing, or digitally signing a PDF changes its bytes and therefore its SHA-256 hash. Holders must submit the exact file they received — not a re-exported copy.
