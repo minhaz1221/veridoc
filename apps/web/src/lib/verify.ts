@@ -1,7 +1,7 @@
 'use client';
 import { ethers } from 'ethers';
 import { leafHash } from '@veridoc/core';
-import type { CredentialBundle } from '@veridoc/core';
+import type { CredentialBundle, Hex } from '@veridoc/core';
 import { getReadProvider, getReadContract, type VerifyResult } from './contract';
 
 export type VerificationState =
@@ -18,10 +18,10 @@ export async function verifyDocument(
   // Hash the file client-side — it never leaves the browser
   const arrayBuffer = await file.arrayBuffer();
   const hashBuf = await crypto.subtle.digest('SHA-256', arrayBuffer);
-  const fileHash = '0x' + Array.from(new Uint8Array(hashBuf)).map((b) => b.toString(16).padStart(2, '0')).join('');
+  const fileHash = ('0x' + Array.from(new Uint8Array(hashBuf)).map((b) => b.toString(16).padStart(2, '0')).join('')) as Hex;
 
   const lh = leafHash({
-    fileSha256: bundle.fileSha256,
+    fileSha256: fileHash,
     certId: bundle.certId,
     salt: bundle.salt,
   });

@@ -104,7 +104,7 @@ test.describe('VeriDoc verify flow', () => {
   });
 
   test('verify page: upload untampered file → Valid', async ({ page }) => {
-    if (!CONTRACT_ADDRESS) test.skip();
+    expect(CONTRACT_ADDRESS, 'NEXT_PUBLIC_CONTRACT_ADDRESS must be set to run this test').toBeTruthy();
 
     await page.goto('/');
 
@@ -142,7 +142,7 @@ test.describe('VeriDoc verify flow', () => {
   });
 
   test('verify page: upload tampered file → Tampered', async ({ page }) => {
-    if (!CONTRACT_ADDRESS) test.skip();
+    expect(CONTRACT_ADDRESS, 'NEXT_PUBLIC_CONTRACT_ADDRESS must be set to run this test').toBeTruthy();
 
     await page.goto('/');
 
