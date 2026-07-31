@@ -16,6 +16,7 @@
     "prettier-plugin-solidity": "^1.4.0",
     "typescript": "^5.5.0"
   },
+  "packageManager": "pnpm@11.1.2",
   "engines": {
     "node": ">=22",
     "pnpm": ">=11"
